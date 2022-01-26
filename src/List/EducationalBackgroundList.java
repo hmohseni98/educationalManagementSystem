@@ -1,4 +1,6 @@
-package EducationalSystemManagement;
+package List;
+
+import Entity.EducationalBackground;
 
 public class EducationalBackgroundList {
     private EducationalBackground[] educationalBackgrounds;

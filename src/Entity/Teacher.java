@@ -1,12 +1,10 @@
-package EducationalSystemManagement;
+package Entity;
 
 public class Teacher extends Person {
-    private String id;
     private String typeOfEmployment;
     private Long income;
-    public Teacher(String nationalCode, String firstName, String lastName, String id,String typeOfEmployment, Long income) {
+    public Teacher(String nationalCode, String firstName, String lastName,String typeOfEmployment, Long income) {
         super(nationalCode, firstName, lastName);
-        this.id = id;
         this.typeOfEmployment = typeOfEmployment;
         this.income = income;
     }

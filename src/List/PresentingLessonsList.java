@@ -1,4 +1,6 @@
-package EducationalSystemManagement;
+package List;
+
+import Entity.PresentingLesson;
 
 public class PresentingLessonsList {
     private PresentingLesson[] presentingLessons;

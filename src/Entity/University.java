@@ -1,4 +1,6 @@
-package EducationalSystemManagement;
+package Entity;
+
+import List.*;
 
 import java.util.Random;
 
@@ -28,20 +30,18 @@ public class University {
     }
 
 
-    public boolean checkUserLogin(String username , String password){
-        if (username.equals("admin") && password.equals("admin"))
+    public boolean checkUserLogin(String type , String username , String password){
+        if (type.equals("employee") && username.equals("admin") && password.equals("admin"))
             return true;
         else
-            return userRegisterList.checkUserLogin(username,password);
+            return userRegisterList.checkUserLogin(type,username,password);
     }
     public void addUser(String type,String username,String password){
         UserRegister newUser = new UserRegister(type,username,password);
         userRegisterList.add(newUser);
     }
-    // آیا نباید رجیستر استودنت به عنوان یک متد در کلاس یوزر تعریف شود؟
     public void addStudent(String nationalCode, String firstName, String lastName){
-        int studentCode = random.nextInt(100000);//10000,100000
-        Student newStudent = new Student(nationalCode,firstName,lastName,String.valueOf(studentCode));
+        Student newStudent = new Student(nationalCode,firstName,lastName);
         studentList.add(newStudent);
     }
     public void removeStudent(String nationalCode){
@@ -52,9 +52,8 @@ public class University {
         studentList.edit(nationalCode,firstName,lastName);
     }
     public void addTeacher(String nationalCode, String firstName, String lastName , String typeOfEmployment){
-        int teacherId = random.nextInt(1200);//1000,1200
         Long income = salary.calcScienceCommitteeSalary(10) ;//****************تعداد واحد*******
-        Teacher newTeacher = new Teacher(nationalCode,firstName,lastName,String.valueOf(teacherId),typeOfEmployment, income);
+        Teacher newTeacher = new Teacher(nationalCode,firstName,lastName,typeOfEmployment, income);
         teacherList.add(newTeacher);
     }
     public void removeTeacher(String nationalCode){
@@ -64,9 +63,8 @@ public class University {
         teacherList.edit(nationalCode,firstName,lastName,typeOfEmployment);
     }
     public void addEmployee(String nationalCode, String firstName, String lastName){
-        int employeeId = random.nextInt(1400);//1201,1400
         Long income = salary.calcEmployeeSalary();
-        Employee newEmployee = new Employee(nationalCode,firstName,lastName,String.valueOf(employeeId),income);
+        Employee newEmployee = new Employee(nationalCode,firstName,lastName,income);
         employeeList.add(newEmployee);
     }
     public void removeEmployee(String nationalCode){

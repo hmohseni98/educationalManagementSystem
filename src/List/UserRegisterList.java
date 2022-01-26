@@ -1,4 +1,6 @@
-package EducationalSystemManagement;
+package List;
+
+import Entity.UserRegister;
 
 public class UserRegisterList {
     private UserRegister[] userRegisters;
@@ -12,9 +14,12 @@ public class UserRegisterList {
         userRegisters[emptyIndex] = userRegister;
         emptyIndex++;
     }
-    public boolean checkUserLogin(String username , String password){
+
+    public boolean checkUserLogin(String type, String username, String password) {
         for (int i = 0; i < emptyIndex; i++) {
-            if (userRegisters[i].getUsername().equals(username) && userRegisters[i].getPassword().equals(password))
+            if (userRegisters[i].getType().equals(type) &&
+                    userRegisters[i].getUsername().equals(username) &&
+                    userRegisters[i].getPassword().equals(password))
                 return true;
         }
         return false;

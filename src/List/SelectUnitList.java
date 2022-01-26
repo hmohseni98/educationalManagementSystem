@@ -1,4 +1,6 @@
-package EducationalSystemManagement;
+package List;
+
+import Entity.SelectUnit;
 
 public class SelectUnitList {
     private SelectUnit[] selectUnits;

@@ -1,4 +1,6 @@
-package EducationalSystemManagement;
+package List;
+
+import Entity.Employee;
 
 public class EmployeeList {
     private Employee[] employees;

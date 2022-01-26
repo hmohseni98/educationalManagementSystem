@@ -1,4 +1,6 @@
-package EducationalSystemManagement;
+package List;
+
+import Entity.Teacher;
 
 public class TeacherList {
     private Teacher[] teachers;

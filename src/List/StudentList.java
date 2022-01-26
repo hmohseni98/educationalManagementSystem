@@ -1,4 +1,6 @@
-package EducationalSystemManagement;
+package List;
+
+import Entity.Student;
 
 public class StudentList {
     private Student[] students;
@@ -54,7 +56,6 @@ public class StudentList {
         if (emptyIndex != 0) {
             saveIndex = searchByNationalCode(nationalCode);
             System.out.println("NationalCode: " + students[saveIndex].getNationalCode() + "   " +
-                    "StudentCode:" + students[saveIndex].getStudentCode() + "   " +
                     "FirstName:" + students[saveIndex].getFirstName() + "   " +
                     "LastName:" + students[saveIndex].getLastName());
         }

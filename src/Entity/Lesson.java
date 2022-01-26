@@ -1,4 +1,4 @@
-package EducationalSystemManagement;
+package Entity;
 
 public class Lesson {
     private String id;

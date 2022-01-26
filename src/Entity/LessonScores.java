@@ -1,4 +1,4 @@
-package EducationalSystemManagement;
+package Entity;
 
 public class LessonScores {
     private String year;

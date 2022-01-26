@@ -1,4 +1,6 @@
-package EducationalSystemManagement;
+package List;
+
+import Entity.LessonScores;
 
 public class LessonScoresList {
     private LessonScores[] lessonScores;
