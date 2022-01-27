@@ -1,8 +1,15 @@
+import CustomException.InvalidCharacter;
+import CustomException.InvalidInputOption;
+import CustomException.InvalidNationalCodeLength;
+import CustomException.InvalidParameter;
 import Entity.University;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+    private static final String TEXT_RED = "\u001B[31m";
+    private static final String TEXT_RESET = "\u001B[0m";
     private static Scanner scanner = new Scanner(System.in);
     public static University university = new University();
 
@@ -12,15 +19,30 @@ public class Main {
     }
 
     public static void welcomeMenu() {
-        System.out.println("default login ---> employee - admin - admin");
-        System.out.println("1:Sign In");
-        System.out.println("2:Sign Up");
-        System.out.print("select one option:");
-        int input = scanner.nextInt();
-        if (input == 1)
-            loginMenu();
-        else if (input == 2)
-            signupMenu();
+        try {
+            System.out.println("default login ---> employee - admin - admin");
+            System.out.println("default login ---> teacher - mohseni - 123456");
+            System.out.println("default login ---> student - mohseni - 123456");
+            System.out.println("1:Sign In");
+            System.out.println("2:Sign Up");
+            System.out.print("select one option:");
+            int input = scanner.nextInt();
+            if (input == 1)
+                loginMenu();
+            else if (input == 2)
+                signupMenu();
+            else {
+                throw new InvalidInputOption();
+            }
+        } catch (InputMismatchException e) {
+            scanner.nextLine();
+            System.out.println(TEXT_RED + "Invalid character" + TEXT_RESET);
+            welcomeMenu();
+        } catch (InvalidInputOption e) {
+            scanner.nextLine();
+            System.out.println(e.toString());
+            welcomeMenu();
+        }
     }
 
     public static void signupMenu() {
@@ -102,144 +124,206 @@ public class Main {
         );
         System.out.println();
         System.out.print("input command:");
-        String command = scanner.nextLine().trim();
-        String[] commandList = command.split(" ");
-        if (commandList[0].equals("student")) {
-            if (commandList[1].equals("add")) {
-                university.addStudent(commandList[2], commandList[3], commandList[4]);
+        try {
+            String command = scanner.nextLine().trim();
+            String[] commandList = command.split(" ");
+            if (commandList[0].equals("student")) {
+                if (commandList[1].equals("add")) {
+                    validateNationalCode(commandList[2]);
+                    university.addStudent(commandList[2], commandList[3], commandList[4]);
+                    employeeMenu();
+                } else if (commandList[1].equals("edit")) {
+                    validateNationalCode(commandList[2]);
+                    university.editStudent(commandList[2], commandList[3], commandList[4]);
+                    employeeMenu();
+                } else if (commandList[1].equals("remove")) {
+                    validateNationalCode(commandList[2]);
+
+                    university.removeStudent(commandList[2]);
+                    employeeMenu();
+                } else {
+                    throw new InvalidParameter();
+                }
+            } else if (commandList[0].equals("teacher")) {
+                if (commandList[1].equals("add")) {
+                    validateNationalCode(commandList[2]);
+                    university.addTeacher(commandList[2], commandList[3], commandList[4], commandList[5]);
+                    employeeMenu();
+                } else if (commandList[1].equals("edit")) {
+                    validateNationalCode(commandList[2]);
+                    university.editTeacher(commandList[2], commandList[3], commandList[4], commandList[5]);
+                    employeeMenu();
+                } else if (commandList[1].equals("remove")) {
+                    validateNationalCode(commandList[2]);
+                    university.removeTeacher(commandList[2]);
+                    employeeMenu();
+                } else {
+                    throw new InvalidParameter();
+                }
+            } else if (commandList[0].equals("employee")) {
+                if (commandList[1].equals("add")) {
+                    validateNationalCode(commandList[2]);
+                    university.addEmployee(commandList[2], commandList[3], commandList[4]);
+                    employeeMenu();
+                } else if (commandList[1].equals("edit")) {
+                    validateNationalCode(commandList[2]);
+                    university.editEmployee(commandList[2], commandList[3], commandList[4]);
+                    employeeMenu();
+                } else if (commandList[1].equals("remove")) {
+                    validateNationalCode(commandList[2]);
+                    university.removeEmployee(commandList[2]);
+                    employeeMenu();
+                } else {
+                    throw new InvalidParameter();
+                }
+            } else if (commandList[0].equals("lesson")) {
+                if (commandList[1].equals("add")) {
+                    university.addLesson(commandList[2], Integer.valueOf(commandList[3]));
+                    employeeMenu();
+                } else if (commandList[1].equals("show")) {
+                    university.showLessons();
+                    employeeMenu();
+                } else if (commandList[1].equals("edit")) {
+                    university.editLesson(commandList[2], commandList[3], Integer.valueOf(commandList[4]));
+                    employeeMenu();
+                } else if (commandList[1].equals("remove")) {
+                    university.removeLesson(commandList[2]);
+                    employeeMenu();
+                } else {
+                    throw new InvalidParameter();
+                }
+            } else if (commandList[0].equals("presenting")) {
+                university.addPresentingLessons(commandList[1], commandList[2], commandList[3], commandList[4]);
                 employeeMenu();
-            } else if (commandList[1].equals("edit")) {
-                university.editStudent(commandList[2], commandList[3], commandList[4]);
+            } else if (commandList[0].equals("salary")) {
+                System.out.println(university.calcEmployeeSalary(commandList[1]));
                 employeeMenu();
-            } else if (commandList[1].equals("remove")) {
-                university.removeStudent(commandList[2]);
-                employeeMenu();
+            } else if (commandList[0].equals("exit")) {
+                welcomeMenu();
             } else {
-                System.out.println("Invalid parameter:" + commandList[1]);
-                employeeMenu();
+                throw new InvalidParameter();
             }
-        } else if (commandList[0].equals("teacher")) {
-            if (commandList[1].equals("add")) {
-                university.addTeacher(commandList[2], commandList[3], commandList[4], commandList[5]);
-                employeeMenu();
-            } else if (commandList[1].equals("edit")) {
-                university.editTeacher(commandList[2], commandList[3], commandList[4], commandList[5]);
-                employeeMenu();
-            } else if (commandList[1].equals("remove")) {
-                university.removeTeacher(commandList[2]);
-                employeeMenu();
-            } else {
-                System.out.println("Invalid parameter:" + commandList[1]);
-                employeeMenu();
-            }
-        } else if (commandList[0].equals("employee")) {
-            if (commandList[1].equals("add")) {
-                university.addEmployee(commandList[2], commandList[3], commandList[4]);
-                employeeMenu();
-            } else if (commandList[1].equals("edit")) {
-                university.editEmployee(commandList[2], commandList[3], commandList[4]);
-                employeeMenu();
-            } else if (commandList[1].equals("remove")) {
-                university.removeEmployee(commandList[2]);
-                employeeMenu();
-            } else {
-                System.out.println("Invalid parameter:" + commandList[1]);
-                employeeMenu();
-            }
-        } else if (commandList[0].equals("lesson")) {
-            if (commandList[1].equals("add")) {
-                university.addLesson(commandList[2], Integer.valueOf(commandList[3]));
-                employeeMenu();
-            } else if (commandList[1].equals("show")) {
-                university.showLessons();
-                employeeMenu();
-            } else if (commandList[1].equals("edit")) {
-                university.editLesson(commandList[2], commandList[3], Integer.valueOf(commandList[4]));
-                employeeMenu();
-            } else if (commandList[1].equals("remove")) {
-                university.removeLesson(commandList[2]);
-                employeeMenu();
-            } else {
-                System.out.println("Invalid parameter:" + commandList[1]);
-                employeeMenu();
-            }
-        } else if (commandList[0].equals("presenting")) {
-            university.addPresentingLessons(commandList[1], commandList[2], commandList[3], commandList[4]);
+        } catch (InvalidParameter e) {
+            System.out.println(e.toString());
             employeeMenu();
-        } else if (commandList[0].equals("salary")) {
-            System.out.println(university.calcEmployeeSalary(commandList[1]));
+        } catch (InvalidCharacter e) {
+            System.out.println(e.toString());
             employeeMenu();
-        } else if (commandList[0].equals("exit")) {
-            welcomeMenu();
-        } else {
-            System.out.println("Invalid parameter");
+        } catch (InvalidNationalCodeLength e) {
+            System.out.println(e.toString());
             employeeMenu();
         }
     }
 
     public static void studentMenu() {
-        System.out.println("select one option:");
-        System.out.println("show information(student nationalCode):" + "\n" +
-                "show lesson list(lesson show)" + "\n" +
-                "select unit(select year term nationalCode lessonName)" + "\n" +
-                "show take a lesson(lesson take nationalCode)" + "\n" +
-                "exit");
-        System.out.println();
-        System.out.print("input command:");
-        String command = scanner.nextLine().trim();
-        String[] commandList = command.split(" ");
-        if (commandList[0].equals("student")) {
-            university.showStudent(commandList[1]);
-            studentMenu();
-        } else if (commandList[0].equals("lesson")) {
-            if (commandList[1].equals("show")) {
-                university.showLessons();
+        try {
+            System.out.println("select one option:");
+            System.out.println("show information(student nationalCode):" + "\n" +
+                    "show lesson list(lesson show)" + "\n" +
+                    "select unit(select year term nationalCode lessonName)" + "\n" +
+                    "show take a lesson(lesson take nationalCode)" + "\n" +
+                    "exit");
+            System.out.println();
+            System.out.print("input command:");
+            String command = scanner.nextLine().trim();
+            String[] commandList = command.split(" ");
+            if (commandList[0].equals("student")) {
+                validateNationalCode(commandList[1]);
+                university.showStudent(commandList[1]);
                 studentMenu();
-            } else if (commandList[1].equals("take")) {
-                university.searchByNationalCodeForLessonList(commandList[2]);
+            } else if (commandList[0].equals("lesson")) {
+                if (commandList[1].equals("show")) {
+                    university.showLessons();
+                    studentMenu();
+                } else if (commandList[1].equals("take")) {
+                    validateNationalCode(commandList[2]);
+                    university.searchByNationalCodeForLessonList(commandList[2]);
+                    studentMenu();
+                }
+            } else if (commandList[0].equals("select")) {
+                validateNationalCode(commandList[3]);
+                university.addSelectUnit(commandList[1], commandList[2], commandList[3], commandList[4]);
                 studentMenu();
+            } else if (commandList[0].equals("exit"))
+                welcomeMenu();
+            else {
+                throw new InvalidParameter();
             }
-        } else if (commandList[0].equals("select")) {
-            university.addSelectUnit(commandList[1], commandList[2], commandList[3], commandList[4]);
+        } catch (InvalidParameter e) {
+            System.out.println(e.toString());
             studentMenu();
-        } else if (commandList[0].equals("exit"))
-            welcomeMenu();
-        else {
-            System.out.println("Invalid parameter");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(TEXT_RED + "data does not exist!" + TEXT_RESET);
+            studentMenu();
+        } catch (NullPointerException e) {
+            System.out.println(TEXT_RED + "data does not exist!" + TEXT_RESET);
+            studentMenu();
+        } catch (InvalidCharacter e) {
+            System.out.println(e.toString());
+            studentMenu();
+        } catch (InvalidNationalCodeLength e) {
+            System.out.println(e.toString());
             studentMenu();
         }
     }
 
     public static void teacherMenu() {
-        System.out.println("select one option:");
-        System.out.println("show information(teacher nationalCode):" + "\n" +
-                "input score(submit year term lessonName nationalCodeStudent score)" + "\n" +
-                "show salary(salary nationalCode year term typeOfEmployment('S' For science Committee Or 'T' For Tuition))" + "\n" +
-                "exit");
-        System.out.println();
-        System.out.print("input command:");
-        String command = scanner.nextLine().trim();
-        String[] commandList = command.split(" ");
-        if (commandList[0].equals("teacher")) {
-            university.showTeacher(commandList[1]);
-            teacherMenu();
-        } else if (commandList[0].equals("submit")) {
-            university.addLessonScores(commandList[1], commandList[2], commandList[3], commandList[4], Float.valueOf(commandList[5]));
-            teacherMenu();
-        } else if (commandList[0].equals("salary")) {
-            if (commandList[4].equals("S") || commandList[4].equals("s")) {
-                System.out.println(university.calcScienceCommitteeSalary(commandList[1], commandList[2], commandList[3]));
+        try {
+            System.out.println("select one option:");
+            System.out.println("show information(teacher nationalCode):" + "\n" +
+                    "input score(submit year term lessonName nationalCodeStudent score)" + "\n" +
+                    "show salary(salary nationalCode year term typeOfEmployment('S' For science Committee Or 'T' For Tuition))" + "\n" +
+                    "exit");
+            System.out.println();
+            System.out.print("input command:");
+            String command = scanner.nextLine().trim();
+            String[] commandList = command.split(" ");
+            if (commandList[0].equals("teacher")) {
+                validateNationalCode(commandList[1]);
+                university.showTeacher(commandList[1]);
                 teacherMenu();
-            }
-            else if (commandList[4].equals("T") || commandList[4].equals("t")) {
-                System.out.println(university.calcTuitionSalary(commandList[1], commandList[2], commandList[3]));
+            } else if (commandList[0].equals("submit")) {
+                validateNationalCode(commandList[4]);
+                university.addLessonScores(commandList[1], commandList[2], commandList[3], commandList[4], Float.valueOf(commandList[5]));
                 teacherMenu();
+            } else if (commandList[0].equals("salary")) {
+                validateNationalCode(commandList[1]);
+                if (commandList[4].equals("S") || commandList[4].equals("s")) {
+                    System.out.println(university.calcScienceCommitteeSalary(commandList[1], commandList[2], commandList[3]));
+                    teacherMenu();
+                } else if (commandList[4].equals("T") || commandList[4].equals("t")) {
+                    System.out.println(university.calcTuitionSalary(commandList[1], commandList[2], commandList[3]));
+                    teacherMenu();
+                }
+            } else if (commandList[0].equals("exit"))
+                welcomeMenu();
+            else {
+                throw new InvalidParameter();
             }
-        } else if (commandList[0].equals("exit"))
-            welcomeMenu();
-        else {
-            System.out.println("Invalid parameter");
+        } catch (InvalidParameter e) {
+            System.out.println(e.toString());
+            teacherMenu();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(TEXT_RED + "data does not exist!" + TEXT_RESET);
+            teacherMenu();
+        } catch (NullPointerException e) {
+            System.out.println(TEXT_RED + "data does not exist!" + TEXT_RESET);
+            teacherMenu();
+        } catch (InvalidCharacter e) {
+            System.out.println(e.toString());
+            teacherMenu();
+        } catch (InvalidNationalCodeLength e) {
+            System.out.println(e.toString());
             teacherMenu();
         }
+    }
+
+    static void validateNationalCode(String nationalCode) {
+        char[] card = nationalCode.toCharArray();
+        for (char i : card)
+            if (!Character.isDigit(i))
+                throw new InvalidCharacter();
+        if (!(nationalCode.length() == 10))
+            throw new InvalidNationalCodeLength();
     }
 }
