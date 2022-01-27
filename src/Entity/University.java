@@ -40,8 +40,10 @@ public class University {
         UserRegister newUser = new UserRegister(type,username,password);
         userRegisterList.add(newUser);
     }
+    // آیا نباید رجیستر استودنت به عنوان یک متد در کلاس یوزر تعریف شود؟
     public void addStudent(String nationalCode, String firstName, String lastName){
-        Student newStudent = new Student(nationalCode,firstName,lastName);
+        int studentCode = random.nextInt(100000);//10000,100000
+        Student newStudent = new Student(nationalCode,firstName,lastName,String.valueOf(studentCode));
         studentList.add(newStudent);
     }
     public void removeStudent(String nationalCode){
@@ -52,8 +54,9 @@ public class University {
         studentList.edit(nationalCode,firstName,lastName);
     }
     public void addTeacher(String nationalCode, String firstName, String lastName , String typeOfEmployment){
+        int teacherId = random.nextInt(1200);//1000,1200
         Long income = salary.calcScienceCommitteeSalary(10) ;//****************تعداد واحد*******
-        Teacher newTeacher = new Teacher(nationalCode,firstName,lastName,typeOfEmployment, income);
+        Teacher newTeacher = new Teacher(nationalCode,firstName,lastName,String.valueOf(teacherId),typeOfEmployment, income);
         teacherList.add(newTeacher);
     }
     public void removeTeacher(String nationalCode){
@@ -63,8 +66,9 @@ public class University {
         teacherList.edit(nationalCode,firstName,lastName,typeOfEmployment);
     }
     public void addEmployee(String nationalCode, String firstName, String lastName){
+        int employeeId = random.nextInt(1400);//1201,1400
         Long income = salary.calcEmployeeSalary();
-        Employee newEmployee = new Employee(nationalCode,firstName,lastName,income);
+        Employee newEmployee = new Employee(nationalCode,firstName,lastName,String.valueOf(employeeId),income);
         employeeList.add(newEmployee);
     }
     public void removeEmployee(String nationalCode){
@@ -121,7 +125,7 @@ public class University {
         selectUnitList.add(newSelectUnit);
     }
     public void searchByNationalCodeForLessonList(String studentNationalCode){ // لیست درس ها رو بر اساس کد ملی دانشجو میده
-        lessonScoresList.showLessonByNationalCode(studentNationalCode);
+        selectUnitList.showLessonByNationalCode(studentNationalCode);
     }
     public void showTeacher(String nationalCode){
         teacherList.show(nationalCode);

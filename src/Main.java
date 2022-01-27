@@ -1,13 +1,13 @@
-import Entity.Student;
 import Entity.University;
 
 import java.util.Scanner;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
-    private static University university = new University();
+    public static University university = new University();
 
     public static void main(String[] args) {
+        FakeDB.fillData();
         welcomeMenu();
     }
 
@@ -41,6 +41,7 @@ public class Main {
         String username = scanner.next();
         System.out.print("Enter password:");
         String password = scanner.next();
+        String mamad = scanner.nextLine();
         String result;
         result = checkUser(type, username, password);
         if (result.equals("employee"))
@@ -104,49 +105,75 @@ public class Main {
         String command = scanner.nextLine().trim();
         String[] commandList = command.split(" ");
         if (commandList[0].equals("student")) {
-            if (commandList[1].equals("add"))
+            if (commandList[1].equals("add")) {
                 university.addStudent(commandList[2], commandList[3], commandList[4]);
-            else if (commandList[1].equals("edit"))
+                employeeMenu();
+            } else if (commandList[1].equals("edit")) {
                 university.editStudent(commandList[2], commandList[3], commandList[4]);
-            else if (commandList[1].equals("remove"))
+                employeeMenu();
+            } else if (commandList[1].equals("remove")) {
                 university.removeStudent(commandList[2]);
-            else
+                employeeMenu();
+            } else {
                 System.out.println("Invalid parameter:" + commandList[1]);
+                employeeMenu();
+            }
         } else if (commandList[0].equals("teacher")) {
-            if (commandList[1].equals("add"))
+            if (commandList[1].equals("add")) {
                 university.addTeacher(commandList[2], commandList[3], commandList[4], commandList[5]);
-            else if (commandList[1].equals("edit"))
+                employeeMenu();
+            } else if (commandList[1].equals("edit")) {
                 university.editTeacher(commandList[2], commandList[3], commandList[4], commandList[5]);
-            else if (commandList[1].equals("remove"))
+                employeeMenu();
+            } else if (commandList[1].equals("remove")) {
                 university.removeTeacher(commandList[2]);
-            else
+                employeeMenu();
+            } else {
                 System.out.println("Invalid parameter:" + commandList[1]);
+                employeeMenu();
+            }
         } else if (commandList[0].equals("employee")) {
-            if (commandList[1].equals("add"))
+            if (commandList[1].equals("add")) {
                 university.addEmployee(commandList[2], commandList[3], commandList[4]);
-            else if (commandList[1].equals("edit"))
+                employeeMenu();
+            } else if (commandList[1].equals("edit")) {
                 university.editEmployee(commandList[2], commandList[3], commandList[4]);
-            else if (commandList[1].equals("remove"))
+                employeeMenu();
+            } else if (commandList[1].equals("remove")) {
                 university.removeEmployee(commandList[2]);
-            else
+                employeeMenu();
+            } else {
                 System.out.println("Invalid parameter:" + commandList[1]);
+                employeeMenu();
+            }
         } else if (commandList[0].equals("lesson")) {
-            if (commandList[1].equals("add"))
+            if (commandList[1].equals("add")) {
                 university.addLesson(commandList[2], Integer.valueOf(commandList[3]));
-            else if (commandList[1].equals("show"))
+                employeeMenu();
+            } else if (commandList[1].equals("show")) {
                 university.showLessons();
-            else if (commandList[1].equals("edit"))
+                employeeMenu();
+            } else if (commandList[1].equals("edit")) {
                 university.editLesson(commandList[2], commandList[3], Integer.valueOf(commandList[4]));
-            else if (commandList[1].equals("remove"))
+                employeeMenu();
+            } else if (commandList[1].equals("remove")) {
                 university.removeLesson(commandList[2]);
-            else
+                employeeMenu();
+            } else {
                 System.out.println("Invalid parameter:" + commandList[1]);
-        } else if (commandList[0].equals("presenting"))
+                employeeMenu();
+            }
+        } else if (commandList[0].equals("presenting")) {
             university.addPresentingLessons(commandList[1], commandList[2], commandList[3], commandList[4]);
-        else if (commandList[0].equals("salary")) {
+            employeeMenu();
+        } else if (commandList[0].equals("salary")) {
             System.out.println(university.calcEmployeeSalary(commandList[1]));
+            employeeMenu();
         } else if (commandList[0].equals("exit")) {
             welcomeMenu();
+        } else {
+            System.out.println("Invalid parameter");
+            employeeMenu();
         }
     }
 
@@ -159,19 +186,23 @@ public class Main {
                 "exit");
         System.out.println();
         System.out.print("input command:");
-        scanner.next();
         String command = scanner.nextLine().trim();
         String[] commandList = command.split(" ");
         if (commandList[0].equals("student")) {
             university.showStudent(commandList[1]);
+            studentMenu();
         } else if (commandList[0].equals("lesson")) {
-            if (commandList[1].equals("show"))
+            if (commandList[1].equals("show")) {
                 university.showLessons();
-            else if (commandList[1].equals("take"))
+                studentMenu();
+            } else if (commandList[1].equals("take")) {
                 university.searchByNationalCodeForLessonList(commandList[2]);
-        } else if (commandList[0].equals("select"))
+                studentMenu();
+            }
+        } else if (commandList[0].equals("select")) {
             university.addSelectUnit(commandList[1], commandList[2], commandList[3], commandList[4]);
-        else if (commandList[0].equals("exit"))
+            studentMenu();
+        } else if (commandList[0].equals("exit"))
             welcomeMenu();
         else {
             System.out.println("Invalid parameter");
@@ -191,18 +222,24 @@ public class Main {
         String[] commandList = command.split(" ");
         if (commandList[0].equals("teacher")) {
             university.showTeacher(commandList[1]);
+            teacherMenu();
         } else if (commandList[0].equals("submit")) {
             university.addLessonScores(commandList[1], commandList[2], commandList[3], commandList[4], Float.valueOf(commandList[5]));
+            teacherMenu();
         } else if (commandList[0].equals("salary")) {
-            if (commandList[4].equals("S") || commandList[4].equals("s"))
+            if (commandList[4].equals("S") || commandList[4].equals("s")) {
                 System.out.println(university.calcScienceCommitteeSalary(commandList[1], commandList[2], commandList[3]));
-            else if (commandList[4].equals("T") || commandList[4].equals("t"))
+                teacherMenu();
+            }
+            else if (commandList[4].equals("T") || commandList[4].equals("t")) {
                 System.out.println(university.calcTuitionSalary(commandList[1], commandList[2], commandList[3]));
+                teacherMenu();
+            }
         } else if (commandList[0].equals("exit"))
             welcomeMenu();
         else {
             System.out.println("Invalid parameter");
-
+            teacherMenu();
         }
     }
 }

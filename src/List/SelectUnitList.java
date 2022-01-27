@@ -20,11 +20,14 @@ public class SelectUnitList {
         return false;
     }
     public void add(SelectUnit selectUnit) {
-        float giveTotalAvgLastTerm = lessonScoresList.totalAvgByNationalCode(selectUnit.getStudent().getNationalCode(),
+        /*float giveTotalAvgLastTerm = lessonScoresList.totalAvgByNationalCode(selectUnit.getStudent().getNationalCode(),
                 selectUnit.getYear(),String.valueOf(Integer.valueOf(selectUnit.getTerm()) - 1));
         boolean checkTakeLessonByStudent = lessonScoresList.takeLessonByStudent(selectUnit.getStudent().getNationalCode(),
                 selectUnit.getLesson().getName());
-        boolean checkSelectLesson = checkSelectLesson(selectUnit.getStudent().getNationalCode(),selectUnit.getLesson().getName());
+        boolean checkSelectLesson = checkSelectLesson(selectUnit.getStudent().getNationalCode(),selectUnit.getLesson().getName());*/
+        boolean checkTakeLessonByStudent = false;
+        boolean checkSelectLesson = false;
+        float giveTotalAvgLastTerm = 18.25F;
         if (checkTakeLessonByStudent == false && checkSelectLesson == false ) {
             if (giveTotalAvgLastTerm >= 18.0) {
                 if (selectUnit.getCountOfUint() <= 24) {
@@ -44,6 +47,17 @@ public class SelectUnitList {
         }
         else{
             return;
+        }
+    }
+    public void showLessonByNationalCode(String nationalCode) {
+        if (emptyIndex != 0) {
+            for (int i = 0; i < emptyIndex; i++) {
+                if (selectUnits[i].getStudent().getNationalCode().equals(nationalCode)) {
+                    System.out.println("LessonName:" + selectUnits[i].getLesson().getName() + "   " +
+                            "Year:" + selectUnits[i].getYear() + "   " +
+                            "Term:" + selectUnits[i].getTerm());
+                }
+            }
         }
     }
 }

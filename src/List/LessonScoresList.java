@@ -16,6 +16,7 @@ public class LessonScoresList {
         lessonScores[emptyIndex] = lessonScore;
         emptyIndex++;
     }
+
     public void showLessonByNationalCode(String nationalCode) {
         if (emptyIndex != 0) {
             for (int i = 0; i < emptyIndex; i++) {
@@ -28,31 +29,37 @@ public class LessonScoresList {
             }
         }
     }
-    public boolean takeLessonByStudent(String nationalCode, String lessonName){
-            for (int i = 0; i < emptyIndex; i++) {
-                if (lessonScores[i].getStudent().getNationalCode().equals(nationalCode) &&
-                        lessonScores[i].getLessons().getName().equals(lessonName))
-                    return true;
-            }
+
+    public boolean takeLessonByStudent(String nationalCode, String lessonName) {
+        for (int i = 0; i < emptyIndex; i++) {
+            if (lessonScores[i].getStudent().getNationalCode().equals(nationalCode) &&
+                    lessonScores[i].getLessons().getName().equals(lessonName))
+                return true;
+        }
         return false;
     }
+
     public LessonScores searchByNameReturnLessonScores(String nationalCode) {
-            for (int i = 0; i < emptyIndex; i++) {
-                if (lessonScores[i].getStudent().getNationalCode().equals(nationalCode))
-                    return lessonScores[i];
-            }
+        for (int i = 0; i < emptyIndex; i++) {
+            if (lessonScores[i].getStudent().getNationalCode().equals(nationalCode))
+                return lessonScores[i];
+        }
         return null;
     }
-    public float totalAvgByNationalCode(String nationalCode, String year, String term){
+
+    public float totalAvgByNationalCode(String nationalCode, String year, String term) {
         float totalAvg = 0;
         int counter = 0;
         for (int i = 0; i < emptyIndex; i++) {
             if (lessonScores[i].getStudent().getNationalCode().equals(nationalCode) &&
-                    lessonScores[i].getYear().equals(year) && lessonScores[i].getTerm().equals(term)){
+                    lessonScores[i].getYear().equals(year) && lessonScores[i].getTerm().equals(term)) {
                 totalAvg = totalAvg + lessonScores[i].getScore();
                 counter++;
             }
         }
-        return (totalAvg / counter);
+        if (totalAvg == 0) {
+            return 14;
+        } else
+            return (totalAvg / counter);
     }
 }
